@@ -276,44 +276,55 @@
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
         // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-
+        let app;
+        let db;
+        let auth;
         let userId = null; // Will be set after authentication
 
-        // Function to authenticate Firebase user
-        async function authenticateFirebase() {
+        async function initializeFirebaseAndAuth() {
             try {
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                console.log("Firebase app initialized.");
+
                 if (initialAuthToken) {
                     await signInWithCustomToken(auth, initialAuthToken);
+                    console.log("Firebase authenticated with custom token.");
                 } else {
                     await signInAnonymously(auth);
+                    console.log("Firebase authenticated anonymously.");
                 }
-                userId = auth.currentUser?.uid || crypto.randomUUID(); // Set userId after auth
-                console.log("Firebase authenticated. User ID:", userId);
-                // After authentication, seed initial data
+                userId = auth.currentUser?.uid || crypto.randomUUID();
+                console.log("Firebase authentication complete. User ID:", userId);
+
+                // Now that Firebase is ready, try to seed data
                 await seedInitialProductData();
+
             } catch (error) {
-                console.error("Error authenticating with Firebase:", error);
-                // Fallback to a random ID if auth fails, so app can still partially function
-                userId = crypto.randomUUID();
-                document.getElementById('errorMessage').textContent = 'Authentication failed. Data might not be available.';
+                console.error("Error during Firebase initialization or authentication:", error);
+                userId = crypto.randomUUID(); // Fallback to a random ID if auth fails
+                document.getElementById('errorMessage').textContent = 'Firebase initialization failed. Data might not be available.';
                 document.getElementById('errorMessage').style.display = 'block';
             }
         }
 
-        // Call authentication on window load
-        window.addEventListener('load', authenticateFirebase);
+        // Call initialization on window load
+        window.addEventListener('load', initializeFirebaseAndAuth);
 
         // Function to seed initial product data
         async function seedInitialProductData() {
+            if (!db) {
+                console.error("Firestore DB not initialized. Cannot seed data.");
+                return;
+            }
+
             const productsCollectionRef = collection(db, `artifacts/${appId}/public/data/products`);
             const q = query(productsCollectionRef);
             const querySnapshot = await getDocs(q);
 
             if (querySnapshot.empty) {
-                console.log("Seeding initial product data...");
+                console.log("No existing product data found. Seeding initial product data...");
                 const products = [
                     {
                         name: "Apple MacBook Air M2",
@@ -486,15 +497,242 @@
                         price: "₹17,211",
                         imageUrl: "https://placehold.co/400x200/e54f4f/ffffff?text=Oppo+K13+5G",
                         features: ["Snapdragon 6 Gen 4", "16MP Front Camera", "50MP Main Camera"]
+                    },
+                    // New Tablets for India 2025
+                    {
+                        name: "Samsung Galaxy Tab S10 FE+",
+                        category: "Tablet",
+                        country: "India",
+                        description: "A Fan Edition tablet with a focus on value and performance.",
+                        price: "₹55,999",
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Galaxy+Tab+S10+FE%2B",
+                        features: ["AMOLED Display", "S Pen Support", "Long Battery Life"]
+                    },
+                    {
+                        name: "Xiaomi Pad 6",
+                        category: "Tablet",
+                        country: "India",
+                        description: "Powerful tablet for productivity and entertainment, great value.",
+                        price: "₹24,999",
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Xiaomi+Pad+6",
+                        features: ["Snapdragon 870", "144Hz Display", "Dolby Atmos"]
+                    },
+                    {
+                        name: "Realme Pad 2",
+                        category: "Tablet",
+                        country: "India",
+                        description: "Affordable tablet with a large display for media consumption.",
+                        price: "₹17,999",
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Realme+Pad+2",
+                        features: ["Large Display", "Good Battery", "Lightweight Design"]
+                    },
+                    {
+                        name: "OnePlus Pad Go",
+                        category: "Tablet",
+                        country: "India",
+                        description: "Budget-friendly tablet offering a smooth OxygenOS experience.",
+                        price: "₹17,999",
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=OnePlus+Pad+Go",
+                        features: ["OxygenOS", "Fluid Display", "Quad Speakers"]
+                    },
+                    {
+                        name: "Motorola Moto Pad 60 Pro",
+                        category: "Tablet",
+                        country: "India",
+                        description: "A pro-grade tablet from Motorola for enhanced productivity.",
+                        price: "₹26,999",
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Moto+Pad+60+Pro",
+                        features: ["High-Res Display", "Powerful Processor", "Stylus Support"]
+                    },
+                    {
+                        name: "Apple iPad 11th Gen",
+                        category: "Tablet",
+                        country: "India",
+                        description: "The latest iteration of Apple's standard iPad, improved performance.",
+                        price: "₹33,199",
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=iPad+11th+Gen",
+                        features: ["A-series Chip", "Retina Display", "USB-C"]
+                    },
+                    {
+                        name: "Lenovo Yoga Slim 7i Aura Edition",
+                        category: "Tablet",
+                        country: "India",
+                        description: "Premium and stylish 2-in-1 device with unique design and powerful specs.",
+                        price: "₹1,32,141",
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Yoga+Slim+7i+Aura",
+                        features: ["High-End Processor", "OLED Display", "Premium Build"]
+                    },
+                    // Note: Motorola Edge 60 Pro is already listed under mobile, skipping duplication as a tablet
+                    {
+                        name: "Nubia Red Magic Gaming Tablet 3 Pro",
+                        category: "Tablet",
+                        country: "India",
+                        description: "High-performance gaming tablet with advanced cooling and powerful chip.",
+                        price: "₹70,000", // Estimated price
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Red+Magic+Gaming+Tab",
+                        features: ["Gaming Processor", "High Refresh Rate", "Active Cooling"]
+                    },
+                    {
+                        name: "Lenovo Legion Y700 (2025)",
+                        category: "Tablet",
+                        country: "India",
+                        description: "Compact gaming tablet designed for portable performance.",
+                        price: "₹45,000", // Estimated price
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Legion+Y700+(2025)",
+                        features: ["Gaming Chipset", "Compact Size", "Fast Charging"]
+                    },
+                    {
+                        name: "Samsung Galaxy Tab S10 Ultra (5G)",
+                        category: "Tablet",
+                        country: "India",
+                        description: "Ultra-premium tablet with a massive display and 5G connectivity.",
+                        price: "₹1,39,999", // Estimated price
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Galaxy+Tab+S10+Ultra",
+                        features: ["Largest AMOLED Screen", "Top-tier Processor", "S Pen"]
+                    },
+                    {
+                        name: "Oppo Pad 3 Pro",
+                        category: "Tablet",
+                        country: "India",
+                        description: "High-end tablet from Oppo with flagship features.",
+                        price: "₹50,000", // Estimated price
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Oppo+Pad+3+Pro",
+                        features: ["Powerful Chipset", "Vivid Display", "Fast Charging"]
+                    },
+                    {
+                        name: "Honor Pad GT Pro",
+                        category: "Tablet",
+                        country: "India",
+                        description: "A large and immersive tablet for multimedia and light productivity.",
+                        price: "₹30,000", // Estimated price
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Honor+Pad+GT+Pro",
+                        features: ["Large Screen", "Good Speakers", "Long Battery"]
+                    },
+                    {
+                        name: "Xiaomi Pad 7 Ultra (Upcoming)",
+                        category: "Tablet",
+                        country: "India",
+                        description: "Rumored ultra-premium tablet from Xiaomi with top-tier specifications.",
+                        price: "₹68,990",
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Xiaomi+Pad+7+Ultra",
+                        features: ["Flagship Processor", "High-Resolution Display", "Large Battery"]
+                    },
+                    {
+                        name: "Samsung Galaxy Tab S11 Ultra (Upcoming)",
+                        category: "Tablet",
+                        country: "India",
+                        description: "Next-gen ultra-premium tablet with cutting-edge technology.",
+                        price: "₹1,29,990",
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Galaxy+Tab+S11+Ultra",
+                        features: ["Next-Gen Processor", "Improved Display", "Enhanced S Pen"]
+                    },
+                    {
+                        name: "Xiaomi Pad 7 Pro (Upcoming)",
+                        category: "Tablet",
+                        country: "India",
+                        description: "Expected to be a powerful and feature-rich tablet from Xiaomi.",
+                        price: "₹28,990",
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Xiaomi+Pad+7+Pro",
+                        features: ["Powerful Processor", "High Refresh Rate Screen"]
+                    },
+                    {
+                        name: "Lenovo Xiaoxin Pad Pro 12.7",
+                        category: "Tablet",
+                        country: "India",
+                        description: "A large-screen tablet for immersive viewing and productivity.",
+                        price: "₹35,000", // Estimated price
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Xiaoxin+Pad+Pro",
+                        features: ["12.7-inch Display", "Productivity Features"]
+                    },
+                    {
+                        name: "Samsung Galaxy Tab S9 Ultra",
+                        category: "Tablet",
+                        country: "India",
+                        description: "Previous generation's top-tier Samsung tablet, still excellent.",
+                        price: "₹1,00,000", // Estimated current price
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Galaxy+Tab+S9+Ultra",
+                        features: ["Large AMOLED Display", "Snapdragon 8 Gen 2", "Included S Pen"]
+                    },
+                    {
+                        name: "Apple iPad (10th Generation)",
+                        category: "Tablet",
+                        country: "India",
+                        description: "Colorful and versatile iPad for everyday tasks and creativity.",
+                        price: "₹36,900", // Current retail price
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=iPad+10th+Gen",
+                        features: ["A14 Bionic Chip", "Liquid Retina Display", "USB-C"]
+                    },
+                    {
+                        name: "Amazon Fire HD 10",
+                        category: "Tablet",
+                        country: "India",
+                        description: "Affordable tablet for entertainment, especially Amazon content.",
+                        price: "₹14,999",
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Amazon+Fire+HD+10",
+                        features: ["Full HD Display", "Alexa Built-in", "Kid-Friendly Options"]
+                    },
+                    {
+                        name: "Samsung Galaxy Tab S9 FE+",
+                        category: "Tablet",
+                        country: "India",
+                        description: "Feature-packed Fan Edition tablet at a more accessible price point.",
+                        price: "₹48,999",
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Galaxy+Tab+S9+FE%2B",
+                        features: ["IP68 Rating", "S Pen Included", "Dual Cameras"]
+                    },
+                    {
+                        name: "Lenovo Tab Plus",
+                        category: "Tablet",
+                        country: "India",
+                        description: "A solid mid-range tablet for family use and entertainment.",
+                        price: "₹22,000", // Estimated price
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Lenovo+Tab+Plus",
+                        features: ["Good Display", "Stereo Speakers", "Long Battery Life"]
+                    },
+                    {
+                        name: "Apple iPad Pro (M4)",
+                        category: "Tablet",
+                        country: "India",
+                        description: "The most powerful iPad with the latest M4 chip, ultra-thin design.",
+                        price: "₹94,900",
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=iPad+Pro+M4",
+                        features: ["M4 Chip", "Ultra Retina XDR", "Pencil Pro Support"]
+                    },
+                    {
+                        name: "OnePlus Pad 2",
+                        category: "Tablet",
+                        country: "India",
+                        description: "Successor to the original OnePlus Pad with expected performance upgrades.",
+                        price: "₹40,000", // Estimated price
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=OnePlus+Pad+2",
+                        features: ["Powerful Processor", "Smooth Display", "Fast Charging"]
+                    },
+                    {
+                        name: "Amazon Fire HD 8",
+                        category: "Tablet",
+                        country: "India",
+                        description: "Compact and affordable tablet for basic use and content consumption.",
+                        price: "₹9,999",
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Amazon+Fire+HD+8",
+                        features: ["Portable", "Affordable", "Alexa"]
+                    },
+                    {
+                        name: "Samsung Galaxy Tab A9+",
+                        category: "Tablet",
+                        country: "India",
+                        description: "Entry-level Samsung tablet with a decent screen and ecosystem access.",
+                        price: "₹15,999",
+                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Galaxy+Tab+A9%2B",
+                        features: ["Affordable", "Large Screen", "Samsung Ecosystem"]
                     }
                 ];
 
                 for (const product of products) {
                     try {
                         await addDoc(productsCollectionRef, product);
-                        console.log("Added product:", product.name);
+                        console.log("Seeded product:", product.name);
                     } catch (e) {
-                        console.error("Error adding product:", product.name, e);
+                        console.error("Error seeding product:", product.name, e);
                     }
                 }
             } else {
@@ -516,10 +754,16 @@
             loadingSpinner.style.display = 'block'; // Show loading spinner
             modal.style.display = 'flex'; // Show modal
 
+            console.log(`Attempting to show products for category: ${category}`);
+
             try {
-                // Ensure authentication is ready before fetching
-                if (!auth.currentUser) {
-                     await authenticateFirebase(); // Try authenticating if not already
+                // Ensure Firebase is initialized and authenticated before fetching
+                if (!auth || !auth.currentUser) {
+                    console.log("Firebase not fully authenticated. Retrying initialization...");
+                    await initializeFirebaseAndAuth(); // Attempt to re-initialize if not ready
+                    if (!auth.currentUser) {
+                         throw new Error("Firebase authentication failed or is not ready.");
+                    }
                 }
 
                 const productsRef = collection(db, `artifacts/${appId}/public/data/products`);
@@ -527,10 +771,13 @@
                                 where("category", "==", category),
                                 where("country", "==", "India")
                                 );
+                console.log(`Fetching data from Firestore for category: ${category}, country: India`);
                 const querySnapshot = await getDocs(q);
+                console.log(`Fetched ${querySnapshot.size} documents for category: ${category}`);
 
                 if (querySnapshot.empty) {
-                    productContainer.innerHTML = '<p class="text-center text-gray-600 col-span-full">No products found for this category in India.</p>';
+                    productContainer.innerHTML = `<p class="text-center text-gray-600 col-span-full py-8">No products found for "${category}" in India at this time.</p>`;
+                    console.log(`No products found for ${category}.`);
                 } else {
                     querySnapshot.forEach((doc) => {
                         const product = doc.data();
@@ -546,11 +793,12 @@
                             </div>
                         `;
                         productContainer.innerHTML += productCard;
+                        console.log(`Rendered product: ${product.name}`);
                     });
                 }
             } catch (error) {
-                console.error("Error fetching products:", error);
-                errorMessage.textContent = 'Failed to load products. Please try again later.';
+                console.error("Error fetching or rendering products:", error);
+                errorMessage.textContent = `Failed to load products: ${error.message}. Please check console for details.`;
                 errorMessage.style.display = 'block';
             } finally {
                 loadingSpinner.style.display = 'none'; // Hide loading spinner
