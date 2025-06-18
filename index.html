@@ -276,27 +276,33 @@
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
         // Initialize Firebase
-        let app;
-        let db;
-        let auth;
-        let userId = null; // Will be set after authentication
+        let appInstance; // Renamed to avoid confusion with global 'app' variable by some linters
+        let dbInstance;   // Renamed
+        let authInstance; // Renamed
+        let userId = null;
+        let isFirebaseInitialized = false; // New flag
 
         async function initializeFirebaseAndAuth() {
+            if (isFirebaseInitialized) {
+                console.log("Firebase already initialized.");
+                return; // Already initialized, no need to run again
+            }
             try {
-                app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
+                appInstance = initializeApp(firebaseConfig);
+                dbInstance = getFirestore(appInstance);
+                authInstance = getAuth(appInstance); // authInstance is set here
                 console.log("Firebase app initialized.");
 
                 if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken);
+                    await signInWithCustomToken(authInstance, initialAuthToken);
                     console.log("Firebase authenticated with custom token.");
                 } else {
-                    await signInAnonymously(auth);
+                    await signInAnonymously(authInstance);
                     console.log("Firebase authenticated anonymously.");
                 }
-                userId = auth.currentUser?.uid || crypto.randomUUID();
+                userId = authInstance.currentUser?.uid || crypto.randomUUID();
                 console.log("Firebase authentication complete. User ID:", userId);
+                isFirebaseInitialized = true; // Set flag to true after successful initialization and authentication
 
                 // Now that Firebase is ready, try to seed data
                 await seedInitialProductData();
@@ -314,12 +320,12 @@
 
         // Function to seed initial product data
         async function seedInitialProductData() {
-            if (!db) {
+            if (!dbInstance) { // Use dbInstance
                 console.error("Firestore DB not initialized. Cannot seed data.");
                 return;
             }
 
-            const productsCollectionRef = collection(db, `artifacts/${appId}/public/data/products`);
+            const productsCollectionRef = collection(dbInstance, `artifacts/${appId}/public/data/products`); // Use dbInstance
             const q = query(productsCollectionRef);
             const querySnapshot = await getDocs(q);
 
@@ -758,15 +764,16 @@
 
             try {
                 // Ensure Firebase is initialized and authenticated before fetching
-                if (!auth || !auth.currentUser) {
-                    console.log("Firebase not fully authenticated. Retrying initialization...");
-                    await initializeFirebaseAndAuth(); // Attempt to re-initialize if not ready
-                    if (!auth.currentUser) {
-                         throw new Error("Firebase authentication failed or is not ready.");
+                if (!isFirebaseInitialized) { // Check the flag
+                    console.log("Firebase not yet initialized. Attempting initialization and waiting...");
+                    await initializeFirebaseAndAuth(); // Await its completion
+                    if (!isFirebaseInitialized) { // Check again after waiting
+                         throw new Error("Firebase authentication failed or is not ready after initialization attempt.");
                     }
                 }
 
-                const productsRef = collection(db, `artifacts/${appId}/public/data/products`);
+                // Use authInstance and dbInstance here
+                const productsRef = collection(dbInstance, `artifacts/${appId}/public/data/products`);
                 const q = query(productsRef,
                                 where("category", "==", category),
                                 where("country", "==", "India")
