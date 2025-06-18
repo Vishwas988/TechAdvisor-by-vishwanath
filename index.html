@@ -267,7 +267,7 @@
     <!-- Firebase SDK Imports -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Global variables provided by the Canvas environment
@@ -276,42 +276,65 @@
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
         // Initialize Firebase
-        let appInstance; // Renamed to avoid confusion with global 'app' variable by some linters
-        let dbInstance;   // Renamed
-        let authInstance; // Renamed
+        let appInstance;
+        let dbInstance;
+        let authInstance;
         let userId = null;
-        let isFirebaseInitialized = false; // New flag
+
+        // A Promise that resolves when Firebase Auth is ready
+        let authReadyPromise;
+        let resolveAuthReady;
+
+        // Initialize the promise
+        authReadyPromise = new Promise(resolve => {
+            resolveAuthReady = resolve;
+        });
 
         async function initializeFirebaseAndAuth() {
-            if (isFirebaseInitialized) {
-                console.log("Firebase already initialized.");
-                return; // Already initialized, no need to run again
-            }
             try {
-                appInstance = initializeApp(firebaseConfig);
-                dbInstance = getFirestore(appInstance);
-                authInstance = getAuth(appInstance); // authInstance is set here
-                console.log("Firebase app initialized.");
-
-                if (initialAuthToken) {
-                    await signInWithCustomToken(authInstance, initialAuthToken);
-                    console.log("Firebase authenticated with custom token.");
+                if (appInstance) { // Check if appInstance is already defined from a previous call
+                    console.log("Firebase app already initialized. Skipping re-initialization.");
                 } else {
-                    await signInAnonymously(authInstance);
-                    console.log("Firebase authenticated anonymously.");
-                }
-                userId = authInstance.currentUser?.uid || crypto.randomUUID();
-                console.log("Firebase authentication complete. User ID:", userId);
-                isFirebaseInitialized = true; // Set flag to true after successful initialization and authentication
+                    appInstance = initializeApp(firebaseConfig);
+                    dbInstance = getFirestore(appInstance);
+                    authInstance = getAuth(appInstance);
+                    console.log("Firebase app initialized.");
 
-                // Now that Firebase is ready, try to seed data
+                    // Listen for auth state changes to resolve the promise
+                    onAuthStateChanged(authInstance, user => {
+                        if (user) {
+                            userId = user.uid;
+                            console.log("onAuthStateChanged: User logged in:", userId);
+                        } else {
+                            userId = crypto.randomUUID(); // Fallback for anonymous or unauthenticated
+                            console.log("onAuthStateChanged: User is anonymous or logged out. Generated ID:", userId);
+                        }
+                        // Resolve the promise once the initial auth state is known
+                        resolveAuthReady(true);
+                    });
+
+                    // Perform initial sign-in attempt
+                    if (initialAuthToken) {
+                        await signInWithCustomToken(authInstance, initialAuthToken);
+                        console.log("Initial sign-in: Authenticated with custom token.");
+                    } else {
+                        await signInAnonymously(authInstance);
+                        console.log("Initial sign-in: Authenticated anonymously.");
+                    }
+                }
+                
+                // Ensure auth state has been checked at least once
+                await authReadyPromise; 
+
+                // Now that Firebase is ready and auth state settled, try to seed data
                 await seedInitialProductData();
 
             } catch (error) {
                 console.error("Error during Firebase initialization or authentication:", error);
-                userId = crypto.randomUUID(); // Fallback to a random ID if auth fails
+                userId = crypto.randomUUID(); // Fallback if initial auth fails severely
                 document.getElementById('errorMessage').textContent = 'Firebase initialization failed. Data might not be available.';
                 document.getElementById('errorMessage').style.display = 'block';
+                resolveAuthReady(false); // Resolve the promise indicating failure
             }
         }
 
@@ -320,12 +343,13 @@
 
         // Function to seed initial product data
         async function seedInitialProductData() {
-            if (!dbInstance) { // Use dbInstance
+            // Ensure DB instance is available before proceeding
+            if (!dbInstance) {
                 console.error("Firestore DB not initialized. Cannot seed data.");
                 return;
             }
 
-            const productsCollectionRef = collection(dbInstance, `artifacts/${appId}/public/data/products`); // Use dbInstance
+            const productsCollectionRef = collection(dbInstance, `artifacts/${appId}/public/data/products`);
             const q = query(productsCollectionRef);
             const querySnapshot = await getDocs(q);
 
@@ -764,13 +788,8 @@
 
             try {
                 // Ensure Firebase is initialized and authenticated before fetching
-                if (!isFirebaseInitialized) { // Check the flag
-                    console.log("Firebase not yet initialized. Attempting initialization and waiting...");
-                    await initializeFirebaseAndAuth(); // Await its completion
-                    if (!isFirebaseInitialized) { // Check again after waiting
-                         throw new Error("Firebase authentication failed or is not ready after initialization attempt.");
-                    }
-                }
+                await authReadyPromise; // Wait for the auth state to be known
+                console.log("Firebase Auth state is ready. Proceeding with product fetch.");
 
                 // Use authInstance and dbInstance here
                 const productsRef = collection(dbInstance, `artifacts/${appId}/public/data/products`);
