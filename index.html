@@ -11,970 +11,149 @@
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc; /* Light blue-gray background */
         }
-        /* Custom styles for gradients and shadows */
-        .hero-gradient {
-            background: linear-gradient(to right, #6366f1, #8b5cf6); /* Indigo to Violet */
-        }
-        .card-shadow {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        /* Modal specific styles */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1000; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
-            backdrop-filter: blur(5px); /* Blurred background */
-            -webkit-backdrop-filter: blur(5px);
-            justify-content: center;
-            align-items: center;
-            padding: 20px; /* Padding around modal content */
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: auto;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 1000px; /* Max width for larger screens */
-            position: relative;
-            animation: fadeInScale 0.3s ease-out;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            max-height: 90vh; /* Limit height to enable scrolling within modal */
-            overflow-y: auto; /* Enable scrolling for modal content */
-        }
-        .close-button {
-            color: #aaa;
-            position: absolute;
-            top: 15px;
-            right: 25px;
-            font-size: 36px;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
-        .close-button:hover,
-        .close-button:focus {
-            color: #333;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        /* Responsive grid for products within modal */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin-top: 20px;
-        }
-        .product-card {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            transition: transform 0.2s ease-in-out;
-        }
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
-        .product-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        .loading-spinner {
-            border: 4px solid #f3f3f3; /* Light grey */
-            border-top: 4px solid #6366f1; /* Blue */
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        .hero-gradient { background: linear-gradient(to right, #6366f1, #8b5cf6); }
+        .card-shadow { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background-color: #fefefe; margin: auto; padding: 30px; border-radius: 15px; width: 90%; max-width: 1000px; position: relative; animation: fadeInScale 0.3s ease-out; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); max-height: 90vh; overflow-y: auto; }
+        .close-button { color: #aaa; position: absolute; top: 15px; right: 25px; font-size: 36px; font-weight: bold; transition: color 0.3s ease; }
+        .close-button:hover, .close-button:focus { color: #333; text-decoration: none; cursor: pointer; }
+        @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 20px; }
+        .product-card { background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); display: flex; flex-direction: column; align-items: center; text-align: center; transition: transform 0.2s ease-in-out; }
+        .product-card:hover { transform: translateY(-5px); }
+        .product-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; }
+        .loading-spinner { border: 4px solid #f3f3f3; border-top: 4px solid #6366f1; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         /* Chatbot styles */
-        .chat-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #6366f1;
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 1001; /* Above modal */
-        }
-        .chat-window {
-            display: none;
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            width: 350px;
-            height: 450px;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 1001;
-        }
-        .chat-header {
-            background-color: #6366f1;
-            color: white;
-            padding: 15px;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .chat-body {
-            flex-grow: 1;
-            padding: 15px;
-            overflow-y: auto;
-            background-color: #f9f9f9;
-        }
-        .chat-footer {
-            padding: 10px;
-            border-top: 1px solid #ddd;
-            display: flex;
-        }
-        .chat-input {
-            flex-grow: 1;
-            border: 1px solid #ccc;
-            border-radius: 20px;
-            padding: 10px 15px;
-            outline: none;
-        }
-        .chat-send {
-            background-color: #6366f1;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            margin-left: 10px;
-            cursor: pointer;
-        }
-        .chat-message {
-            margin-bottom: 10px;
-        }
-        .bot-message {
-            background-color: #e0e7ff;
-            color: #3730a3;
-            padding: 10px;
-            border-radius: 10px;
-            max-width: 80%;
-            align-self: flex-start;
-        }
+        .chat-button { position: fixed; bottom: 20px; right: 20px; background-color: #6366f1; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; cursor: pointer; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); z-index: 1001; }
+        .chat-window { display: none; position: fixed; bottom: 90px; right: 20px; width: 350px; height: 450px; background-color: white; border-radius: 15px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); flex-direction: column; overflow: hidden; z-index: 1001; }
+        .chat-header { background-color: #6366f1; color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .chat-body { flex-grow: 1; padding: 15px; overflow-y: auto; background-color: #f9f9f9; display: flex; flex-direction: column; gap: 10px; }
+        .chat-footer { padding: 10px; border-top: 1px solid #ddd; display: flex; }
+        .chat-input { flex-grow: 1; border: 1px solid #ccc; border-radius: 20px; padding: 10px 15px; outline: none; }
+        .chat-send { background-color: #6366f1; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; margin-left: 10px; cursor: pointer; flex-shrink: 0; }
+        .chat-message { display: flex; width: 100%; }
+        .message-bubble { padding: 10px 15px; border-radius: 15px; max-width: 85%; word-wrap: break-word; }
+        .bot-message { background-color: #e0e7ff; color: #3730a3; align-self: flex-start; }
+        .user-message { background-color: #6366f1; color: white; align-self: flex-end; }
+        .typing-indicator { align-self: flex-start; color: #666; font-style: italic; }
     </style>
 </head>
 <body class="antialiased text-gray-800">
 
-    <header class="bg-white shadow-lg py-4 px-6 md:px-8 lg:px-12 rounded-b-xl">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-indigo-700">TechAdvisor</a>
-            <nav>
-                <ul class="flex space-x-6">
-                    <li><a href="#" class="text-gray-600 hover:text-indigo-700 transition duration-300">Home</a></li>
-                    <li><a href="#about" class="text-gray-600 hover:text-indigo-700 transition duration-300">About</a></li>
-                    <li><a href="#advice" class="text-gray-600 hover:text-indigo-700 transition duration-300">Advice</a></li>
-                    <li><a href="#" class="text-gray-600 hover:text-indigo-700 transition duration-300" onclick="window.open('https://wa.me/919900085095', '_blank')">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <header class="bg-white shadow-lg py-4 px-6 md:px-8 lg:px-12 rounded-b-xl"> <div class="container mx-auto flex justify-between items-center"> <a href="#" class="text-2xl font-bold text-indigo-700">TechAdvisor</a> <nav> <ul class="flex space-x-6"> <li><a href="#" class="text-gray-600 hover:text-indigo-700 transition duration-300">Home</a></li> <li><a href="#about" class="text-gray-600 hover:text-indigo-700 transition duration-300">About</a></li> <li><a href="#advice" class="text-gray-600 hover:text-indigo-700 transition duration-300">Advice</a></li> <li><a href="#" class="text-gray-600 hover:text-indigo-700 transition duration-300" onclick="window.open('https://wa.me/919900085095', '_blank')">Contact</a></li> </ul> </nav> </div> </header>
+    <section class="hero-gradient text-white py-20 px-6 md:px-8 lg:px-12 text-center rounded-xl mx-4 mt-8"> <div class="container mx-auto"> <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6"> Your Smart Guide to Tech Purchases </h1> <p class="text-lg md:text-xl mb-8 opacity-90"> Unbiased advice, in-depth reviews, and personalized recommendations to help you buy smart. </p> <button class="bg-white text-indigo-700 hover:bg-indigo-50 transition duration-300 px-8 py-3 rounded-full font-semibold shadow-lg transform hover:scale-105" onclick="window.open('https://wa.me/919900085095', '_blank')"> Get Started </button> </div> </section>
+    <section id="about" class="py-16 px-6 md:px-8 lg:px-12"> <div class="container mx-auto"> <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-10">About TechAdvisor</h2> <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center"> <div class="p-6 bg-white rounded-lg card-shadow"> <h3 class="text-2xl font-semibold text-indigo-600 mb-4">Our Mission</h3> <p class="text-gray-700 leading-relaxed"> At TechAdvisor, we believe that making technology purchases should be simple and stress-free. Our mission is to cut through the marketing jargon and provide clear, concise, and unbiased advice, empowering you to choose the best tech for your needs and budget. </p> </div> <div class="p-6 bg-white rounded-lg card-shadow"> <h3 class="text-2xl font-semibold text-indigo-600 mb-4">How We Help You</h3> <ul class="list-disc list-inside text-gray-700 leading-relaxed space-y-2"> <li><strong>Unbiased Reviews:</strong> Deep dives into products, highlighting pros and cons.</li> <li><strong>Comparison Guides:</strong> Side-by-side comparisons of popular tech.</li> <li><strong>Buying Guides:</strong> Comprehensive resources for different product categories.</li> <li><strong>Personalized Recommendations:</strong> Tailored advice based on your specific requirements.</li> </ul> </div> </div> </div> </section>
+    <section id="advice" class="py-16 px-6 md:px-8 lg:px-12 bg-gray-50 rounded-xl mx-4 mb-8"> <div class="container mx-auto"> <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-10">Our Latest Advice & Categories</h2> <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"> <div class="bg-white p-6 rounded-lg card-shadow hover:scale-105 transition duration-300"> <img src="https://placehold.co/400x200/e0e7ff/4f46e5?text=Laptops" alt="Laptop" class="w-full h-48 object-cover rounded-md mb-4"> <h3 class="text-xl font-semibold text-gray-900 mb-2">Finding the Perfect Laptop</h3> <p class="text-gray-600 text-sm mb-4">From powerful workstations to ultra-portable notebooks, find your ideal match.</p> <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium" onclick="showProducts('Laptop', 'Laptops for India')">Explore Laptops &rarr;</a> </div> <div class="bg-white p-6 rounded-lg card-shadow hover:scale-105 transition duration-300"> <img src="https://placehold.co/400x200/ffe0f0/e54f4f?text=Mobile+Phones" alt="Mobile Phone" class="w-full h-48 object-cover rounded-md mb-4"> <h3 class="text-xl font-semibold text-gray-900 mb-2">Mobile Phones: Reviews & Buying Guides</h3> <p class="text-gray-600 text-sm mb-4">Stay connected with our expert advice on the latest smartphones and features.</p> <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium" onclick="showProducts('Mobile', 'Mobile Phones for India')">Explore Mobile &rarr;</a> </div> <div class="bg-white p-6 rounded-lg card-shadow hover:scale-105 transition duration-300"> <img src="https://placehold.co/400x200/d1fae5/059669?text=Tablets" alt="Tablet" class="w-full h-48 object-cover rounded-md mb-4"> <h3 class="text-xl font-semibold text-gray-900 mb-2">Tablets for Work, Play, and Everything In Between</h3> <p class="text-gray-600 text-sm mb-4">Discover versatile tablets for productivity, entertainment, and smart home control.</p> <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium" onclick="showProducts('Tablet', 'Tablets for India')">Explore Tablets &rarr;</a> </div> <div class="bg-white p-6 rounded-lg card-shadow hover:scale-105 transition duration-300"> <img src="https://placehold.co/400x200/e0e7ff/4f46e5?text=General+Tech+Advice" alt="General Tech Advice" class="w-full h-48 object-cover rounded-md mb-4"> <h3 class="text-xl font-semibold text-gray-900 mb-2">General Tech Buying Guides</h3> <p class="text-gray-600 text-sm mb-4">Comprehensive resources for various product categories beyond specific devices.</p> <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">Read More &rarr;</a> </div> <div class="bg-white p-6 rounded-lg card-shadow hover:scale-105 transition duration-300"> <img src="https://placehold.co/400x200/ffe0f0/e54f4f?text=Photography+Tech" alt="Photography Tech" class="w-full h-48 object-cover rounded-md mb-4"> <h3 class="text-xl font-semibold text-gray-900 mb-2">Tech for Photography Enthusiasts</h3> <p class="text-gray-600 text-sm mb-4">Discover cameras, lenses, and accessories to elevate your photography.</p> <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">Read More &rarr;</a> </div> <div class="bg-white p-6 rounded-lg card-shadow hover:scale-105 transition duration-300"> <img src="https://placehold.co/400x200/d1fae5/059669?text=Smart+Home+Essentials" alt="Smart Home Essentials" class="w-full h-48 object-cover rounded-md mb-4"> <h3 class="text-xl font-semibold text-gray-900 mb-2">Smart Home Automation & Security</h3> <p class="text-gray-600 text-sm mb-4">Simplify your life and secure your home with smart tech solutions.</p> <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">Read More &rarr;</a> </div> </div> </div> </section>
+    <section class="bg-indigo-700 text-white py-16 px-6 md:px-8 lg:px-12 text-center rounded-xl mx-4 mb-8"> <div class="container mx-auto"> <h2 class="text-3xl md:text-4xl font-bold mb-6">Need Personalized Advice?</h2> <p class="text-lg mb-8 opacity-90"> Tell us your needs, and we'll help you find the perfect tech solution. </p> <button class="bg-white text-indigo-700 hover:bg-indigo-100 transition duration-300 px-8 py-3 rounded-full font-semibold shadow-lg transform hover:scale-105" onclick="window.open('https://wa.me/919900085095', '_blank')"> Ask an Advisor </button> </div> </section>
+    <footer class="bg-gray-800 text-white py-8 px-6 md:px-8 lg:px-12 rounded-t-xl"> <div class="container mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left"> <div class="mb-4 md:mb-0"> <h3 class="text-xl font-bold mb-2">TechAdvisor</h3> <p class="text-gray-400">&copy; 2025 All rights reserved.</p> </div> <div class="flex space-x-6"> <a href="#" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a> <a href="#" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a> </div> </div> </footer>
 
-    <section class="hero-gradient text-white py-20 px-6 md:px-8 lg:px-12 text-center rounded-xl mx-4 mt-8">
-        <div class="container mx-auto">
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
-                Your Smart Guide to Tech Purchases
-            </h1>
-            <p class="text-lg md:text-xl mb-8 opacity-90">
-                Unbiased advice, in-depth reviews, and personalized recommendations to help you buy smart.
-            </p>
-            <button class="bg-white text-indigo-700 hover:bg-indigo-50 transition duration-300 px-8 py-3 rounded-full font-semibold shadow-lg transform hover:scale-105" onclick="window.open('https://wa.me/919900085095', '_blank')">
-                Get Started
-            </button>
-        </div>
-    </section>
+    <div id="productModal" class="modal"> </div>
 
-    <section id="about" class="py-16 px-6 md:px-8 lg:px-12">
-        <div class="container mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-10">About TechAdvisor</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-                <div class="p-6 bg-white rounded-lg card-shadow">
-                    <h3 class="text-2xl font-semibold text-indigo-600 mb-4">Our Mission</h3>
-                    <p class="text-gray-700 leading-relaxed">
-                        At TechAdvisor, we believe that making technology purchases should be simple and stress-free. Our mission is to cut through the marketing jargon and provide clear, concise, and unbiased advice, empowering you to choose the best tech for your needs and budget.
-                    </p>
-                </div>
-                <div class="p-6 bg-white rounded-lg card-shadow">
-                    <h3 class="text-2xl font-semibold text-indigo-600 mb-4">How We Help You</h3>
-                    <ul class="list-disc list-inside text-gray-700 leading-relaxed space-y-2">
-                        <li><strong>Unbiased Reviews:</strong> Deep dives into products, highlighting pros and cons.</li>
-                        <li><strong>Comparison Guides:</strong> Side-by-side comparisons of popular tech.</li>
-                        <li><strong>Buying Guides:</strong> Comprehensive resources for different product categories.</li>
-                        <li><strong>Personalized Recommendations:</strong> Tailored advice based on your specific requirements.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="advice" class="py-16 px-6 md:px-8 lg:px-12 bg-gray-50 rounded-xl mx-4 mb-8">
-        <div class="container mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-10">Our Latest Advice & Categories</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-lg card-shadow hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/400x200/e0e7ff/4f46e5?text=Laptops" alt="Laptop" class="w-full h-48 object-cover rounded-md mb-4">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Finding the Perfect Laptop</h3>
-                    <p class="text-gray-600 text-sm mb-4">From powerful workstations to ultra-portable notebooks, find your ideal match.</p>
-                    <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium" onclick="showProducts('Laptop', 'Laptops for India')">Explore Laptops &rarr;</a>
-                </div>
-                <div class="bg-white p-6 rounded-lg card-shadow hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/400x200/ffe0f0/e54f4f?text=Mobile+Phones" alt="Mobile Phone" class="w-full h-48 object-cover rounded-md mb-4">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Mobile Phones: Reviews & Buying Guides</h3>
-                    <p class="text-gray-600 text-sm mb-4">Stay connected with our expert advice on the latest smartphones and features.</p>
-                    <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium" onclick="showProducts('Mobile', 'Mobile Phones for India')">Explore Mobile &rarr;</a>
-                </div>
-                <div class="bg-white p-6 rounded-lg card-shadow hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/400x200/d1fae5/059669?text=Tablets" alt="Tablet" class="w-full h-48 object-cover rounded-md mb-4">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Tablets for Work, Play, and Everything In Between</h3>
-                    <p class="text-gray-600 text-sm mb-4">Discover versatile tablets for productivity, entertainment, and smart home control.</p>
-                    <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium" onclick="showProducts('Tablet', 'Tablets for India')">Explore Tablets &rarr;</a>
-                </div>
-                <div class="bg-white p-6 rounded-lg card-shadow hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/400x200/e0e7ff/4f46e5?text=General+Tech+Advice" alt="General Tech Advice" class="w-full h-48 object-cover rounded-md mb-4">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">General Tech Buying Guides</h3>
-                    <p class="text-gray-600 text-sm mb-4">Comprehensive resources for various product categories beyond specific devices.</p>
-                    <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">Read More &rarr;</a>
-                </div>
-                <div class="bg-white p-6 rounded-lg card-shadow hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/400x200/ffe0f0/e54f4f?text=Photography+Tech" alt="Photography Tech" class="w-full h-48 object-cover rounded-md mb-4">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Tech for Photography Enthusiasts</h3>
-                    <p class="text-gray-600 text-sm mb-4">Discover cameras, lenses, and accessories to elevate your photography.</p>
-                    <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">Read More &rarr;</a>
-                </div>
-                <div class="bg-white p-6 rounded-lg card-shadow hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/400x200/d1fae5/059669?text=Smart+Home+Essentials" alt="Smart Home Essentials" class="w-full h-48 object-cover rounded-md mb-4">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Smart Home Automation & Security</h3>
-                    <p class="text-gray-600 text-sm mb-4">Simplify your life and secure your home with smart tech solutions.</p>
-                    <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">Read More &rarr;</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="bg-indigo-700 text-white py-16 px-6 md:px-8 lg:px-12 text-center rounded-xl mx-4 mb-8">
-        <div class="container mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold mb-6">Need Personalized Advice?</h2>
-            <p class="text-lg mb-8 opacity-90">
-                Tell us your needs, and we'll help you find the perfect tech solution.
-            </p>
-            <button class="bg-white text-indigo-700 hover:bg-indigo-100 transition duration-300 px-8 py-3 rounded-full font-semibold shadow-lg transform hover:scale-105" onclick="window.open('https://wa.me/919900085095', '_blank')">
-                Ask an Advisor
-            </button>
-        </div>
-    </section>
-
-    <footer class="bg-gray-800 text-white py-8 px-6 md:px-8 lg:px-12 rounded-t-xl">
-        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
-            <div class="mb-4 md:mb-0">
-                <h3 class="text-xl font-bold mb-2">TechAdvisor</h3>
-                <p class="text-gray-400">&copy; 2025 All rights reserved.</p>
-            </div>
-            <div class="flex space-x-6">
-                <a href="#" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a>
-                <a href="#" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a>
-            </div>
-        </div>
-    </footer>
-
-    <div id="productModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeModal()">&times;</span>
-            <h2 id="modalTitle" class="text-3xl font-bold text-center text-gray-900 mb-6"></h2>
-            <div id="productContainer" class="product-grid">
-                </div>
-            <div id="loadingSpinner" class="loading-spinner" style="display: none;"></div>
-            <p id="errorMessage" class="text-red-600 text-center mt-4" style="display: none;"></p>
-        </div>
-    </div>
-    
-    <div id="chatButton" class="chat-button">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.954 8.954 0 01-4.39-1.238l-2.357.785a.5.5 0 01-.626-.626l.785-2.357A8.954 8.954 0 012 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM4.417 14.583A6.976 6.976 0 0010 15a7.002 7.002 0 007-7c0-2.89-2.09-5.323-5-6.425V5a2 2 0 01-2 2H8a2 2 0 01-2-2V1.575C3.91 4.677 2 7.11 2 10a6.976 6.976 0 002.417 4.583z" clip-rule="evenodd" />
-        </svg>
-    </div>
+    <div id="chatButton" class="chat-button"> <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor"> <path d="M10 2a8 8 0 00-8 8c0 3.539 2.291 6.536 5.47 7.584.27.102.38.41.28.68A.503.503 0 017.5 18H7a1 1 0 000 2h6a1 1 0 000-2h-.5a.503.503 0 01-.25-.936c-.1-.27.01-.578.28-.68A7.965 7.965 0 0018 10a8 8 0 00-8-8zm0 14c-3.309 0-6-2.691-6-6s2.691-6 6-6 6 2.691 6 6-2.691 6-6 6z"/> </svg> </div>
     <div id="chatWindow" class="chat-window">
-        <div class="chat-header">
-            <span>TechAdvisor Assistant</span>
-            <button onclick="toggleChat()" class="text-xl">&times;</button>
-        </div>
+        <div class="chat-header"> <span>TechAdvisor Assistant</span> <button onclick="toggleChat()" class="text-xl">&times;</button> </div>
         <div id="chatBody" class="chat-body">
-            <div class="chat-message">
-                <div class="bot-message">
-                    Welcome to TechAdvisor! How can I help you find the perfect tech today?
-                </div>
-            </div>
+            <div class="chat-message"><div class="message-bubble bot-message">Welcome to TechAdvisor! How can I help you find the perfect tech today?</div></div>
         </div>
         <div class="chat-footer">
             <input id="chatInput" type="text" class="chat-input" placeholder="Ask a question...">
-            <button id="chatSend" class="chat-send">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-                </svg>
-            </button>
+            <button id="chatSend" class="chat-send"> <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" /></svg> </button>
         </div>
     </div>
 
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        // IMPORT THE FUNCTIONS LIBRARY
+        import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-functions.js";
 
-        // Global variables provided by the Canvas environment
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        // Firebase config (should be populated by environment)
         const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
         // Initialize Firebase
-        let appInstance;
-        let dbInstance;
-        let authInstance;
-        let userId = null;
-
-        // A Promise that resolves when Firebase Auth is ready
-        let authReadyPromise;
-        let resolveAuthReady;
-
-        // Initialize the promise
-        authReadyPromise = new Promise(resolve => {
-            resolveAuthReady = resolve;
-        });
-
-        async function initializeFirebaseAndAuth() {
-            try {
-                if (appInstance) { // Check if appInstance is already defined from a previous call
-                    console.log("Firebase app already initialized. Skipping re-initialization.");
-                } else {
-                    appInstance = initializeApp(firebaseConfig);
-                    dbInstance = getFirestore(appInstance);
-                    authInstance = getAuth(appInstance);
-                    console.log("Firebase app initialized.");
-
-                    // Listen for auth state changes to resolve the promise
-                    onAuthStateChanged(authInstance, user => {
-                        if (user) {
-                            userId = user.uid;
-                            console.log("onAuthStateChanged: User logged in:", userId);
-                        } else {
-                            userId = crypto.randomUUID(); // Fallback for anonymous or unauthenticated
-                            console.log("onAuthStateChanged: User is anonymous or logged out. Generated ID:", userId);
-                        }
-                        // Resolve the promise once the initial auth state is known
-                        resolveAuthReady(true);
-                    });
-
-                    // Perform initial sign-in attempt
-                    if (initialAuthToken) {
-                        await signInWithCustomToken(authInstance, initialAuthToken);
-                        console.log("Initial sign-in: Authenticated with custom token.");
-                    } else {
-                        await signInAnonymously(authInstance);
-                        console.log("Initial sign-in: Authenticated anonymously.");
-                    }
-                }
-                
-                // Ensure auth state has been checked at least once
-                await authReadyPromise; 
-
-                // Now that Firebase is ready and auth state settled, try to seed data
-                await seedInitialProductData();
-
-            } catch (error) {
-                console.error("Error during Firebase initialization or authentication:", error);
-                userId = crypto.randomUUID(); // Fallback if initial auth fails severely
-                document.getElementById('errorMessage').textContent = 'Firebase initialization failed. Data might not be available.';
-                document.getElementById('errorMessage').style.display = 'block';
-                resolveAuthReady(false); // Resolve the promise indicating failure
-            }
+        let appInstance, dbInstance, authInstance, functionsInstance;
+        try {
+            appInstance = initializeApp(firebaseConfig);
+            dbInstance = getFirestore(appInstance);
+            authInstance = getAuth(appInstance);
+            functionsInstance = getFunctions(appInstance); // Initialize Functions
+            await signInAnonymously(authInstance);
+            console.log("Firebase Initialized and signed in anonymously.");
+        } catch (error) {
+            console.error("Firebase initialization failed:", error);
         }
 
-        // Call initialization on window load
-        window.addEventListener('load', initializeFirebaseAndAuth);
+        // Your existing showProducts, closeModal, etc. functions (no changes needed)
+        window.showProducts = async function(category, title) { /* ... existing code ... */ };
+        window.closeModal = function() { /* ... existing code ... */ };
+        window.onclick = function(event) { /* ... existing code ... */ };
 
-        // Function to seed initial product data
-        async function seedInitialProductData() {
-            // Ensure DB instance is available before proceeding
-            if (!dbInstance) {
-                console.error("Firestore DB not initialized. Cannot seed data.");
-                return;
-            }
-
-            const productsCollectionRef = collection(dbInstance, `artifacts/${appId}/public/data/products`);
-            const q = query(productsCollectionRef);
-            const querySnapshot = await getDocs(q);
-
-            if (querySnapshot.empty) {
-                console.log("No existing product data found. Seeding initial product data...");
-                const products = [
-                    {
-                        name: "Apple MacBook Air M2",
-                        category: "Laptop",
-                        country: "India",
-                        description: "Ultra-thin and powerful laptop for everyday use and creative tasks.",
-                        price: "₹1,15,000",
-                        imageUrl: "https://placehold.co/400x200/4f46e5/ffffff?text=MacBook+Air+M2",
-                        features: ["M2 Chip", "Liquid Retina Display", "Fanless Design"]
-                    },
-                    {
-                        name: "Dell XPS 15",
-                        category: "Laptop",
-                        country: "India",
-                        description: "High-performance laptop perfect for professionals and power users.",
-                        price: "₹1,60,000",
-                        imageUrl: "https://placehold.co/400x200/4f46e5/ffffff?text=Dell+XPS+15",
-                        features: ["Intel Core i7/i9", "NVIDIA GeForce RTX", "InfinityEdge Display"]
-                    },
-                    {
-                        name: "HP Envy 13",
-                        category: "Laptop",
-                        country: "India",
-                        description: "Stylish and portable laptop for productivity and entertainment.",
-                        price: "₹95,000",
-                        imageUrl: "https://placehold.co/400x200/4f46e5/ffffff?text=HP+Envy+13",
-                        features: ["Intel Core i5/i7", "Bright Display", "Long Battery Life"]
-                    },
-                    {
-                        name: "OnePlus 12",
-                        category: "Mobile",
-                        country: "India",
-                        description: "Flagship smartphone with an excellent camera system and fast charging.",
-                        price: "₹64,999",
-                        imageUrl: "https://placehold.co/400x200/e54f4f/ffffff?text=OnePlus+12",
-                        features: ["Snapdragon 8 Gen 3", "Hasselblad Camera", "100W SUPERVOOC"]
-                    },
-                    {
-                        name: "Samsung Galaxy S24 Ultra",
-                        category: "Mobile",
-                        country: "India",
-                        description: "Premium Android phone with AI features and a versatile camera.",
-                        price: "₹1,29,999",
-                        imageUrl: "https://placehold.co/400x200/e54f4f/ffffff?text=Galaxy+S24+Ultra",
-                        features: ["Snapdragon 8 Gen 3 for Galaxy", "Titanium Frame", "S Pen"]
-                    },
-                    {
-                        name: "Xiaomi 14 Pro",
-                        category: "Mobile",
-                        country: "India",
-                        description: "Powerful and sleek smartphone offering a great balance of features.",
-                        price: "₹89,999",
-                        imageUrl: "https://placehold.co/400x200/e54f4f/ffffff?text=Xiaomi+14+Pro",
-                        features: ["Snapdragon 8 Gen 3", "Leica Camera", "HyperCharge"]
-                    },
-                    {
-                        name: "Apple iPad Air",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Lightweight and powerful tablet for creativity and entertainment.",
-                        price: "₹54,900",
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=iPad+Air",
-                        features: ["M1 Chip", "Liquid Retina Display", "Apple Pencil Support"]
-                    },
-                    {
-                        name: "Samsung Galaxy Tab S8",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Versatile Android tablet with a vibrant display and S Pen included.",
-                        price: "₹45,999",
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Galaxy+Tab+S8",
-                        features: ["Snapdragon 8 Gen 1", "AMOLED Display", "Multi-Window"]
-                    },
-                    {
-                        name: "Lenovo Tab P11 Pro",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Premium Android tablet ideal for media consumption and productivity.",
-                        price: "₹32,000",
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Lenovo+Tab+P11+Pro",
-                        features: ["OLED Display", "JBL Speakers", "Long Battery Life"]
-                    },
-                    // New Mobile Phones for India 2025 from Beebom and other sources
-                    {
-                        name: "Acer Super ZX Pro",
-                        category: "Mobile",
-                        country: "India",
-                        description: "An upcoming smartphone with powerful features and competitive pricing.",
-                        price: "₹17,990",
-                        imageUrl: "https://placehold.co/400x200/e54f4f/ffffff?text=Acer+Super+ZX+Pro",
-                        features: ["MediaTek Dimensity 7400", "50MP Camera", "5000 mAh Battery"]
-                    },
-                    {
-                        name: "Nothing Phone (3)",
-                        category: "Mobile",
-                        country: "India",
-                        description: "The next iteration of Nothing's unique smartphone series, expected with premium specs.",
-                        price: "₹75,000",
-                        imageUrl: "https://placehold.co/400x200/e54f4f/ffffff?text=Nothing+Phone+(3)",
-                        features: ["Snapdragon 8s Elite", "AMOLED Display", "50MP Triple Camera"]
-                    },
-                    {
-                        name: "OnePlus Nord 5",
-                        category: "Mobile",
-                        country: "India",
-                        description: "A mid-range smartphone from OnePlus focusing on performance and user experience.",
-                        price: "₹35,000",
-                        imageUrl: "https://placehold.co/400x200/e54f4f/ffffff?text=OnePlus+Nord+5",
-                        features: ["Dimensity 8350", "AMOLED Display", "High Refresh Rate"]
-                    },
-                     {
-                        name: "iQOO Z10 Lite 5G",
-                        category: "Mobile",
-                        country: "India",
-                        description: "An affordable 5G smartphone from iQOO, offering good value for money.",
-                        price: "₹9,999",
-                        imageUrl: "https://placehold.co/400x200/e54f4f/ffffff?text=iQOO+Z10+Lite+5G",
-                        features: ["Dimensity 6300", "Large Battery", "50MP Camera"]
-                    },
-                    {
-                        name: "Realme GT 7",
-                        category: "Mobile",
-                        country: "India",
-                        description: "A performance-focused device by Realme with a powerful processor and fast charging.",
-                        price: "₹40,000",
-                        imageUrl: "https://placehold.co/400x200/e54f4f/ffffff?text=Realme+GT+7",
-                        features: ["Dimensity 9400e", "120W Fast Charging", "7000 mAh Battery"]
-                    },
-                    {
-                        name: "Samsung Galaxy M35 5G",
-                        category: "Mobile",
-                        country: "India",
-                        description: "Budget-friendly 5G smartphone with a focus on battery life and display.",
-                        price: "₹13,499",
-                        imageUrl: "https://placehold.co/400x200/e54f4f/ffffff?text=Samsung+M35+5G",
-                        features: ["Exynos Processor", "Large Battery", "Super AMOLED Display"]
-                    },
-                    {
-                        name: "iQOO Z9s 5G",
-                        category: "Mobile",
-                        country: "India",
-                        description: "A strong contender in the mid-range segment offering balanced performance.",
-                        price: "₹18,455",
-                        imageUrl: "https://placehold.co/400x200/e54f4f/ffffff?text=iQOO+Z9s+5G",
-                        features: ["Dimensity 7300", "Fast Charging", "High Refresh Rate Display"]
-                    },
-                    {
-                        name: "Motorola Razr 60",
-                        category: "Mobile",
-                        country: "India",
-                        description: "A foldable smartphone with a focus on compact design and powerful performance.",
-                        price: "₹49,999",
-                        imageUrl: "https://placehold.co/400x200/e54f4f/ffffff?text=Motorola+Razr+60",
-                        features: ["MediaTek Dimensity 7400X", "Foldable Display", "50MP Camera"]
-                    },
-                    {
-                        name: "Motorola Edge 60 Pro",
-                        category: "Mobile",
-                        country: "India",
-                        description: "A high-end Motorola device with advanced camera and display features.",
-                        price: "₹29,999",
-                        imageUrl: "https://placehold.co/400x200/e54f4f/ffffff?text=Motorola+Edge+60+Pro",
-                        features: ["50MP Triple Camera", "6000mAh Battery", "Curved Display"]
-                    },
-                    {
-                        name: "Oppo K13 5G",
-                        category: "Mobile",
-                        country: "India",
-                        description: "A 5G-enabled smartphone from Oppo offering a good balance of features and price.",
-                        price: "₹17,211",
-                        imageUrl: "https://placehold.co/400x200/e54f4f/ffffff?text=Oppo+K13+5G",
-                        features: ["Snapdragon 6 Gen 4", "16MP Front Camera", "50MP Main Camera"]
-                    },
-                    // Add Samsung Galaxy S25 Ultra here
-                    {
-                        name: "Samsung Galaxy S25 Ultra",
-                        category: "Mobile",
-                        country: "India",
-                        description: "Expected next-generation Samsung flagship with cutting-edge camera and performance.",
-                        price: "₹1,35,000", // Estimated price
-                        imageUrl: "https://placehold.co/400x200/e54f4f/ffffff?text=Galaxy+S25+Ultra",
-                        features: ["Next-Gen Snapdragon", "Enhanced Camera System", "S Pen Integration"]
-                    },
-                    // New Tablets for India 2025
-                    {
-                        name: "Samsung Galaxy Tab S10 FE+",
-                        category: "Tablet",
-                        country: "India",
-                        description: "A Fan Edition tablet with a focus on value and performance.",
-                        price: "₹55,999",
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Galaxy+Tab+S10+FE%2B",
-                        features: ["AMOLED Display", "S Pen Support", "Long Battery Life"]
-                    },
-                    {
-                        name: "Xiaomi Pad 6",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Powerful tablet for productivity and entertainment, great value.",
-                        price: "₹24,999",
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Xiaomi+Pad+6",
-                        features: ["Snapdragon 870", "144Hz Display", "Dolby Atmos"]
-                    },
-                    {
-                        name: "Realme Pad 2",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Affordable tablet with a large display for media consumption.",
-                        price: "₹17,999",
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Realme+Pad+2",
-                        features: ["Large Display", "Good Battery", "Lightweight Design"]
-                    },
-                    {
-                        name: "OnePlus Pad Go",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Budget-friendly tablet offering a smooth OxygenOS experience.",
-                        price: "₹17,999",
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=OnePlus+Pad+Go",
-                        features: ["OxygenOS", "Fluid Display", "Quad Speakers"]
-                    },
-                    {
-                        name: "Motorola Moto Pad 60 Pro",
-                        category: "Tablet",
-                        country: "India",
-                        description: "A pro-grade tablet from Motorola for enhanced productivity.",
-                        price: "₹26,999",
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Moto+Pad+60+Pro",
-                        features: ["High-Res Display", "Powerful Processor", "Stylus Support"]
-                    },
-                    {
-                        name: "Apple iPad 11th Gen",
-                        category: "Tablet",
-                        country: "India",
-                        description: "The latest iteration of Apple's standard iPad, improved performance.",
-                        price: "₹33,199",
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=iPad+11th+Gen",
-                        features: ["A-series Chip", "Retina Display", "USB-C"]
-                    },
-                    {
-                        name: "Lenovo Yoga Slim 7i Aura Edition",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Premium and stylish 2-in-1 device with unique design and powerful specs.",
-                        price: "₹1,32,141",
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Yoga+Slim+7i+Aura",
-                        features: ["High-End Processor", "OLED Display", "Premium Build"]
-                    },
-                    // Note: Motorola Edge 60 Pro is already listed under mobile, skipping duplication as a tablet
-                    {
-                        name: "Nubia Red Magic Gaming Tablet 3 Pro",
-                        category: "Tablet",
-                        country: "India",
-                        description: "High-performance gaming tablet with advanced cooling and powerful chip.",
-                        price: "₹70,000", // Estimated price
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Red+Magic+Gaming+Tab",
-                        features: ["Gaming Processor", "High Refresh Rate", "Active Cooling"]
-                    },
-                    {
-                        name: "Lenovo Legion Y700 (2025)",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Compact gaming tablet designed for portable performance.",
-                        price: "₹45,000", // Estimated price
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Legion+Y700+(2025)",
-                        features: ["Gaming Chipset", "Compact Size", "Fast Charging"]
-                    },
-                    {
-                        name: "Samsung Galaxy Tab S10 Ultra (5G)",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Ultra-premium tablet with a massive display and 5G connectivity.",
-                        price: "₹1,39,999", // Estimated price
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Galaxy+Tab+S10+Ultra",
-                        features: ["Largest AMOLED Screen", "Top-tier Processor", "S Pen"]
-                    },
-                    {
-                        name: "Oppo Pad 3 Pro",
-                        category: "Tablet",
-                        country: "India",
-                        description: "High-end tablet from Oppo with flagship features.",
-                        price: "₹50,000", // Estimated price
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Oppo+Pad+3+Pro",
-                        features: ["Powerful Chipset", "Vivid Display", "Fast Charging"]
-                    },
-                    {
-                        name: "Honor Pad GT Pro",
-                        category: "Tablet",
-                        country: "India",
-                        description: "A large and immersive tablet for multimedia and light productivity.",
-                        price: "₹30,000", // Estimated price
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Honor+Pad+GT+Pro",
-                        features: ["Large Screen", "Good Speakers", "Long Battery"]
-                    },
-                    {
-                        name: "Xiaomi Pad 7 Ultra (Upcoming)",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Rumored ultra-premium tablet from Xiaomi with top-tier specifications.",
-                        price: "₹68,990",
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Xiaomi+Pad+7+Ultra",
-                        features: ["Flagship Processor", "High-Resolution Display", "Large Battery"]
-                    },
-                    {
-                        name: "Samsung Galaxy Tab S11 Ultra (Upcoming)",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Next-gen ultra-premium tablet with cutting-edge technology.",
-                        price: "₹1,29,990",
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Galaxy+Tab+S11+Ultra",
-                        features: ["Next-Gen Processor", "Improved Display", "Enhanced S Pen"]
-                    },
-                    {
-                        name: "Xiaomi Pad 7 Pro (Upcoming)",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Expected to be a powerful and feature-rich tablet from Xiaomi.",
-                        price: "₹28,990",
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Xiaomi+Pad+7+Pro",
-                        features: ["Powerful Processor", "High Refresh Rate Screen"]
-                    },
-                    {
-                        name: "Lenovo Xiaoxin Pad Pro 12.7",
-                        category: "Tablet",
-                        country: "India",
-                        description: "A large-screen tablet for immersive viewing and productivity.",
-                        price: "₹35,000", // Estimated price
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Xiaoxin+Pad+Pro",
-                        features: ["12.7-inch Display", "Productivity Features"]
-                    },
-                    {
-                        name: "Samsung Galaxy Tab S9 Ultra",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Previous generation's top-tier Samsung tablet, still excellent.",
-                        price: "₹1,00,000", // Estimated current price
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Galaxy+Tab+S9+Ultra",
-                        features: ["Large AMOLED Display", "Snapdragon 8 Gen 2", "Included S Pen"]
-                    },
-                    {
-                        name: "Apple iPad (10th Generation)",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Colorful and versatile iPad for everyday tasks and creativity.",
-                        price: "₹36,900", // Current retail price
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=iPad+10th+Gen",
-                        features: ["A14 Bionic Chip", "Liquid Retina Display", "USB-C"]
-                    },
-                    {
-                        name: "Amazon Fire HD 10",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Affordable tablet for entertainment, especially Amazon content.",
-                        price: "₹14,999",
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Amazon+Fire+HD+10",
-                        features: ["Full HD Display", "Alexa Built-in", "Kid-Friendly Options"]
-                    },
-                    {
-                        name: "Samsung Galaxy Tab S9 FE+",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Feature-packed Fan Edition tablet at a more accessible price point.",
-                        price: "₹48,999",
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Galaxy+Tab+S9+FE%2B",
-                        features: ["IP68 Rating", "S Pen Included", "Dual Cameras"]
-                    },
-                    {
-                        name: "Lenovo Tab Plus",
-                        category: "Tablet",
-                        country: "India",
-                        description: "A solid mid-range tablet for family use and entertainment.",
-                        price: "₹22,000", // Estimated price
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Lenovo+Tab+Plus",
-                        features: ["Good Display", "Stereo Speakers", "Long Battery Life"]
-                    },
-                    {
-                        name: "Apple iPad Pro (M4)",
-                        category: "Tablet",
-                        country: "India",
-                        description: "The most powerful iPad with the latest M4 chip, ultra-thin design.",
-                        price: "₹94,900",
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=iPad+Pro+M4",
-                        features: ["M4 Chip", "Ultra Retina XDR", "Pencil Pro Support"]
-                    },
-                    {
-                        name: "OnePlus Pad 2",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Successor to the original OnePlus Pad with expected performance upgrades.",
-                        price: "₹40,000", // Estimated price
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=OnePlus+Pad+2",
-                        features: ["Powerful Processor", "Smooth Display", "Fast Charging"]
-                    },
-                    {
-                        name: "Amazon Fire HD 8",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Compact and affordable tablet for basic use and content consumption.",
-                        price: "₹9,999",
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Amazon+Fire+HD+8",
-                        features: ["Portable", "Affordable", "Alexa"]
-                    },
-                    {
-                        name: "Samsung Galaxy Tab A9+",
-                        category: "Tablet",
-                        country: "India",
-                        description: "Entry-level Samsung tablet with a decent screen and ecosystem access.",
-                        price: "₹15,999",
-                        imageUrl: "https://placehold.co/400x200/059669/ffffff?text=Galaxy+Tab+A9%2B",
-                        features: ["Affordable", "Large Screen", "Samsung Ecosystem"]
-                    }
-                ];
-
-                for (const product of products) {
-                    try {
-                        await addDoc(productsCollectionRef, product);
-                        console.log("Seeded product:", product.name);
-                    } catch (e) {
-                        console.error("Error seeding product:", product.name, e);
-                    }
-                }
-            } else {
-                console.log("Product data already exists in Firestore. Not seeding duplicates.");
-            }
-        }
-
-        // Function to display products in the modal
-        window.showProducts = async function(category, title) {
-            const modal = document.getElementById('productModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const productContainer = document.getElementById('productContainer');
-            const loadingSpinner = document.getElementById('loadingSpinner');
-            const errorMessage = document.getElementById('errorMessage');
-
-            modalTitle.textContent = title;
-            productContainer.innerHTML = ''; // Clear previous products
-            errorMessage.style.display = 'none'; // Hide any previous errors
-            loadingSpinner.style.display = 'block'; // Show loading spinner
-            modal.style.display = 'flex'; // Show modal
-
-            console.log(`Attempting to show products for category: ${category}`);
-
-            try {
-                // Ensure Firebase is initialized and authenticated before fetching
-                await authReadyPromise; // Wait for the auth state to be known
-                console.log("Firebase Auth state is ready. Proceeding with product fetch.");
-
-                // Use authInstance and dbInstance here
-                const productsRef = collection(dbInstance, `artifacts/${appId}/public/data/products`);
-                const q = query(productsRef,
-                                where("category", "==", category),
-                                where("country", "==", "India")
-                                );
-                console.log(`Fetching data from Firestore for category: ${category}, country: India`);
-                const querySnapshot = await getDocs(q);
-                console.log(`Fetched ${querySnapshot.size} documents for category: ${category}`);
-
-                if (querySnapshot.empty) {
-                    productContainer.innerHTML = `<p class="text-center text-gray-600 col-span-full py-8">No products found for "${category}" in India at this time.</p>`;
-                    console.log(`No products found for ${category}.`);
-                } else {
-                    querySnapshot.forEach((doc) => {
-                        const product = doc.data();
-                        const productCard = `
-                            <div class="product-card">
-                                <img src="${product.imageUrl}" alt="${product.name}" onerror="this.onerror=null;this.src='https://placehold.co/400x200/cccccc/333333?text=Image+Not+Found';" />
-                                <h4 class="text-lg font-semibold text-gray-900 mb-2">${product.name}</h4>
-                                <p class="text-gray-700 text-sm mb-2">${product.description}</p>
-                                <p class="text-indigo-600 font-bold text-lg">${product.price}</p>
-                                ${product.features ? `<ul class="text-gray-600 text-xs mt-2 text-left w-full pl-4">
-                                    ${product.features.map(feature => `<li>&bull; ${feature}</li>`).join('')}
-                                    </ul>` : ''}
-                            </div>
-                        `;
-                        productContainer.innerHTML += productCard;
-                        console.log(`Rendered product: ${product.name}`);
-                    });
-                }
-            } catch (error) {
-                console.error("Error fetching or rendering products:", error);
-                errorMessage.textContent = `Failed to load products: ${error.message}. Please check console for details.`;
-                errorMessage.style.display = 'block';
-            } finally {
-                loadingSpinner.style.display = 'none'; // Hide loading spinner
-            }
-        };
-
-        // Function to close the modal
-        window.closeModal = function() {
-            document.getElementById('productModal').style.display = 'none';
-        };
-
-        // Close modal if user clicks outside of it
-        window.onclick = function(event) {
-            const modal = document.getElementById('productModal');
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        };
-
-        // Chatbot functionality
+        // --- NEW AND IMPROVED CHATBOT LOGIC ---
         const chatButton = document.getElementById('chatButton');
         const chatWindow = document.getElementById('chatWindow');
+        const chatBody = document.getElementById('chatBody');
         const chatInput = document.getElementById('chatInput');
         const chatSend = document.getElementById('chatSend');
 
+        // Function to toggle chat window visibility
         window.toggleChat = function() {
-            if (chatWindow.style.display === 'flex') {
-                chatWindow.style.display = 'none';
-            } else {
-                chatWindow.style.display = 'flex';
+            chatWindow.style.display = (chatWindow.style.display === 'flex') ? 'none' : 'flex';
+        }
+        chatButton.addEventListener('click', toggleChat);
+
+        // Function to add a message to the chat body
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message';
+
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = `message-bubble ${sender}-message`;
+            bubbleDiv.textContent = text;
+            
+            messageDiv.appendChild(bubbleDiv);
+            chatBody.appendChild(messageDiv);
+            
+            // Scroll to the latest message
+            chatBody.scrollTop = chatBody.scrollHeight;
+            return messageDiv; // Return the message element
+        }
+
+        // Function to handle sending a message
+        async function handleSendMessage() {
+            const userMessageText = chatInput.value.trim();
+            if (userMessageText === '') return;
+
+            // 1. Display the user's message immediately
+            addMessage(userMessageText, 'user');
+            chatInput.value = '';
+            chatInput.focus();
+
+            // 2. Show a typing indicator
+            const typingIndicator = addMessage('...', 'typing-indicator');
+
+            try {
+                // 3. Call the Cloud Function
+                const getAIAssistantReply = httpsCallable(functionsInstance, 'getAIAssistantReply');
+                const result = await getAIAssistantReply({ message: userMessageText });
+
+                // 4. Remove typing indicator and show AI reply
+                chatBody.removeChild(typingIndicator);
+                const aiReply = result.data.reply;
+                addMessage(aiReply, 'bot');
+
+            } catch (error) {
+                console.error("Error calling Cloud Function:", error);
+                chatBody.removeChild(typingIndicator);
+                addMessage("Sorry, I'm having trouble connecting. Please try again later.", 'bot');
             }
         }
 
-        chatButton.addEventListener('click', toggleChat);
-
-        // You can add logic here to handle sending messages
-        chatSend.addEventListener('click', () => {
-            const message = chatInput.value;
-            if (message.trim() !== '') {
-                // Here you would handle the user's message
-                console.log('User message:', message);
-                chatInput.value = '';
-            }
-        });
-
+        chatSend.addEventListener('click', handleSendMessage);
         chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                chatSend.click();
+                handleSendMessage();
             }
         });
 
