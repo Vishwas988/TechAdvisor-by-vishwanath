@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechAdvisor - Your Smart Purchase Guide</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -115,11 +114,90 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        /* Chatbot styles */
+        .chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #6366f1;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1001; /* Above modal */
+        }
+        .chat-window {
+            display: none;
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 350px;
+            height: 450px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1001;
+        }
+        .chat-header {
+            background-color: #6366f1;
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-body {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+        .chat-footer {
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            display: flex;
+        }
+        .chat-input {
+            flex-grow: 1;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            padding: 10px 15px;
+            outline: none;
+        }
+        .chat-send {
+            background-color: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .chat-message {
+            margin-bottom: 10px;
+        }
+        .bot-message {
+            background-color: #e0e7ff;
+            color: #3730a3;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+            align-self: flex-start;
+        }
     </style>
 </head>
 <body class="antialiased text-gray-800">
 
-    <!-- Header Section -->
     <header class="bg-white shadow-lg py-4 px-6 md:px-8 lg:px-12 rounded-b-xl">
         <div class="container mx-auto flex justify-between items-center">
             <a href="#" class="text-2xl font-bold text-indigo-700">TechAdvisor</a>
@@ -134,7 +212,6 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero-gradient text-white py-20 px-6 md:px-8 lg:px-12 text-center rounded-xl mx-4 mt-8">
         <div class="container mx-auto">
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
@@ -149,7 +226,6 @@
         </div>
     </section>
 
-    <!-- About Section -->
     <section id="about" class="py-16 px-6 md:px-8 lg:px-12">
         <div class="container mx-auto">
             <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-10">About TechAdvisor</h2>
@@ -173,47 +249,40 @@
         </div>
     </section>
 
-    <!-- Featured Advice/Categories Section -->
     <section id="advice" class="py-16 px-6 md:px-8 lg:px-12 bg-gray-50 rounded-xl mx-4 mb-8">
         <div class="container mx-auto">
             <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-10">Our Latest Advice & Categories</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Advice Card: Laptops -->
                 <div class="bg-white p-6 rounded-lg card-shadow hover:scale-105 transition duration-300">
                     <img src="https://placehold.co/400x200/e0e7ff/4f46e5?text=Laptops" alt="Laptop" class="w-full h-48 object-cover rounded-md mb-4">
                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Finding the Perfect Laptop</h3>
                     <p class="text-gray-600 text-sm mb-4">From powerful workstations to ultra-portable notebooks, find your ideal match.</p>
                     <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium" onclick="showProducts('Laptop', 'Laptops for India')">Explore Laptops &rarr;</a>
                 </div>
-                <!-- Advice Card: Mobile Phones -->
                 <div class="bg-white p-6 rounded-lg card-shadow hover:scale-105 transition duration-300">
                     <img src="https://placehold.co/400x200/ffe0f0/e54f4f?text=Mobile+Phones" alt="Mobile Phone" class="w-full h-48 object-cover rounded-md mb-4">
                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Mobile Phones: Reviews & Buying Guides</h3>
                     <p class="text-gray-600 text-sm mb-4">Stay connected with our expert advice on the latest smartphones and features.</p>
                     <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium" onclick="showProducts('Mobile', 'Mobile Phones for India')">Explore Mobile &rarr;</a>
                 </div>
-                <!-- Advice Card: Tablets -->
                 <div class="bg-white p-6 rounded-lg card-shadow hover:scale-105 transition duration-300">
                     <img src="https://placehold.co/400x200/d1fae5/059669?text=Tablets" alt="Tablet" class="w-full h-48 object-cover rounded-md mb-4">
                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Tablets for Work, Play, and Everything In Between</h3>
                     <p class="text-gray-600 text-sm mb-4">Discover versatile tablets for productivity, entertainment, and smart home control.</p>
                     <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium" onclick="showProducts('Tablet', 'Tablets for India')">Explore Tablets &rarr;</a>
                 </div>
-                <!-- Original Advice Card 1 (Renamed for clarity) -->
                 <div class="bg-white p-6 rounded-lg card-shadow hover:scale-105 transition duration-300">
                     <img src="https://placehold.co/400x200/e0e7ff/4f46e5?text=General+Tech+Advice" alt="General Tech Advice" class="w-full h-48 object-cover rounded-md mb-4">
                     <h3 class="text-xl font-semibold text-gray-900 mb-2">General Tech Buying Guides</h3>
                     <p class="text-gray-600 text-sm mb-4">Comprehensive resources for various product categories beyond specific devices.</p>
                     <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">Read More &rarr;</a>
                 </div>
-                <!-- Original Advice Card 2 (Renamed for clarity) -->
                 <div class="bg-white p-6 rounded-lg card-shadow hover:scale-105 transition duration-300">
                     <img src="https://placehold.co/400x200/ffe0f0/e54f4f?text=Photography+Tech" alt="Photography Tech" class="w-full h-48 object-cover rounded-md mb-4">
                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Tech for Photography Enthusiasts</h3>
                     <p class="text-gray-600 text-sm mb-4">Discover cameras, lenses, and accessories to elevate your photography.</p>
                     <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">Read More &rarr;</a>
                 </div>
-                <!-- Original Advice Card 3 (Renamed for clarity) -->
                 <div class="bg-white p-6 rounded-lg card-shadow hover:scale-105 transition duration-300">
                     <img src="https://placehold.co/400x200/d1fae5/059669?text=Smart+Home+Essentials" alt="Smart Home Essentials" class="w-full h-48 object-cover rounded-md mb-4">
                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Smart Home Automation & Security</h3>
@@ -224,7 +293,6 @@
         </div>
     </section>
 
-    <!-- Call to Action Section -->
     <section class="bg-indigo-700 text-white py-16 px-6 md:px-8 lg:px-12 text-center rounded-xl mx-4 mb-8">
         <div class="container mx-auto">
             <h2 class="text-3xl md:text-4xl font-bold mb-6">Need Personalized Advice?</h2>
@@ -237,7 +305,6 @@
         </div>
     </section>
 
-    <!-- Footer Section -->
     <footer class="bg-gray-800 text-white py-8 px-6 md:px-8 lg:px-12 rounded-t-xl">
         <div class="container mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
             <div class="mb-4 md:mb-0">
@@ -251,20 +318,45 @@
         </div>
     </footer>
 
-    <!-- The Product Modal -->
     <div id="productModal" class="modal">
         <div class="modal-content">
             <span class="close-button" onclick="closeModal()">&times;</span>
             <h2 id="modalTitle" class="text-3xl font-bold text-center text-gray-900 mb-6"></h2>
             <div id="productContainer" class="product-grid">
-                <!-- Product cards will be loaded here -->
-            </div>
+                </div>
             <div id="loadingSpinner" class="loading-spinner" style="display: none;"></div>
             <p id="errorMessage" class="text-red-600 text-center mt-4" style="display: none;"></p>
         </div>
     </div>
+    
+    <div id="chatButton" class="chat-button">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.954 8.954 0 01-4.39-1.238l-2.357.785a.5.5 0 01-.626-.626l.785-2.357A8.954 8.954 0 012 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM4.417 14.583A6.976 6.976 0 0010 15a7.002 7.002 0 007-7c0-2.89-2.09-5.323-5-6.425V5a2 2 0 01-2 2H8a2 2 0 01-2-2V1.575C3.91 4.677 2 7.11 2 10a6.976 6.976 0 002.417 4.583z" clip-rule="evenodd" />
+        </svg>
+    </div>
+    <div id="chatWindow" class="chat-window">
+        <div class="chat-header">
+            <span>TechAdvisor Assistant</span>
+            <button onclick="toggleChat()" class="text-xl">&times;</button>
+        </div>
+        <div id="chatBody" class="chat-body">
+            <div class="chat-message">
+                <div class="bot-message">
+                    Welcome to TechAdvisor! How can I help you find the perfect tech today?
+                </div>
+            </div>
+        </div>
+        <div class="chat-footer">
+            <input id="chatInput" type="text" class="chat-input" placeholder="Ask a question...">
+            <button id="chatSend" class="chat-send">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                </svg>
+            </button>
+        </div>
+    </div>
 
-    <!-- Firebase SDK Imports -->
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -853,6 +945,39 @@
                 modal.style.display = 'none';
             }
         };
+
+        // Chatbot functionality
+        const chatButton = document.getElementById('chatButton');
+        const chatWindow = document.getElementById('chatWindow');
+        const chatInput = document.getElementById('chatInput');
+        const chatSend = document.getElementById('chatSend');
+
+        window.toggleChat = function() {
+            if (chatWindow.style.display === 'flex') {
+                chatWindow.style.display = 'none';
+            } else {
+                chatWindow.style.display = 'flex';
+            }
+        }
+
+        chatButton.addEventListener('click', toggleChat);
+
+        // You can add logic here to handle sending messages
+        chatSend.addEventListener('click', () => {
+            const message = chatInput.value;
+            if (message.trim() !== '') {
+                // Here you would handle the user's message
+                console.log('User message:', message);
+                chatInput.value = '';
+            }
+        });
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                chatSend.click();
+            }
+        });
+
     </script>
 </body>
 </html>
